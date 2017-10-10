@@ -1,3 +1,5 @@
+package swingv1.pkg0;
+
 
 
 public class Game {
@@ -13,7 +15,7 @@ public class Game {
     public static STATE gameState = STATE.Menu;
 
     public Game(){
-        new Hangman("CS245 Project");
+        new Hangman();
     }
 
     public static void main(String[] args) {

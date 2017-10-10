@@ -1,3 +1,5 @@
+package swingv1.pkg0;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
