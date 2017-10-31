@@ -13,9 +13,21 @@ public class Sudoku extends JPanel implements ActionListener
 
     private Game game;
     private int score;
+    private String[][] entries;
     private JLabel clockLabel;
     private JLabel sudokuLabel;
     private JButton quitButton;
+    private static final String[][] SOLUTION = {
+            {"8", "3", "5", "4", "1", "6", "9", "2", "7"},
+            {"2", "9", "6", "8", "5", "7", "4", "3", "1"},
+            {"4", "1", "7", "2", "9", "3", "6", "5", "8"},
+            {"5", "6", "9", "1", "3", "4", "7", "8", "2"},
+            {"1", "2", "3", "6", "7", "8", "5", "4", "9"},
+            {"7", "4", "8", "5", "2", "9", "1", "6", "3"},
+            {"6", "5", "2", "7", "8", "2", "3", "9", "4"},
+            {"9", "8", "1", "3", "4", "5", "2", "7", "6"},
+            {"3", "7", "4", "9", "6", "2", "8", "1", "5"},
+    };
     private static final int CLUSTER = 3;
     private static final int MAX_ROWS = 9;
     private static final float FIELD_PTS = 32f;
@@ -23,12 +35,13 @@ public class Sudoku extends JPanel implements ActionListener
     private static final Color BG = Color.BLACK;
     private static final Color SOLVED_BG = Color.LIGHT_GRAY;
     public static final int TIMER_DELAY = 2 * 1000;
-    private JTextField[][] fieldGrid = new JTextField[MAX_ROWS][MAX_ROWS];
+    private entry[][] fieldGrid = new entry[MAX_ROWS][MAX_ROWS];
+    private JPanel[][] panels;
 
     public Sudoku(Game game, int score)
     {
         this.game = game;
-        this.score = score;
+        this.score = score + 540;
         clockLabel = new JLabel("");
         sudokuLabel = new JLabel("Sudoku");
         sudokuLabel.setFont(new Font("Arial", Font.BOLD, 20));
@@ -38,7 +51,7 @@ public class Sudoku extends JPanel implements ActionListener
         JPanel mainPanel = new JPanel(new GridLayout(CLUSTER, CLUSTER));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
         mainPanel.setBackground(BG);
-        JPanel[][] panels = new JPanel[CLUSTER][CLUSTER];
+        panels = new JPanel[CLUSTER][CLUSTER];
         for (int i = 0; i < panels.length; i++)
         {
             for (int j = 0; j < panels[i].length; j++)
@@ -50,75 +63,65 @@ public class Sudoku extends JPanel implements ActionListener
             }
         }
 
-        for (int row = 0; row < fieldGrid.length; row++)
-        {
-            for (int col = 0; col < fieldGrid[row].length; col++)
-            {
-                fieldGrid[row][col] = createField(row, col);
-                int i = row / 3;
-                int j = col / 3;
-                panels[i][j].add(fieldGrid[row][col]);
-            }
-        }
 
-        fieldGrid[0][0].setText("8");
-        fieldGrid[0][3].setText("4");
-        fieldGrid[0][5].setText("6");
-        fieldGrid[0][8].setText("7");
-        fieldGrid[1][6].setText("4");
-        fieldGrid[2][1].setText("1");
-        fieldGrid[2][6].setText("6");
-        fieldGrid[2][7].setText("5");
-        fieldGrid[3][0].setText("5");
-        fieldGrid[3][2].setText("9");
-        fieldGrid[3][4].setText("3");
-        fieldGrid[3][6].setText("7");
-        fieldGrid[3][7].setText("8");
-        fieldGrid[4][4].setText("7");
-        fieldGrid[5][1].setText("4");
-        fieldGrid[5][2].setText("8");
-        fieldGrid[5][4].setText("2");
-        fieldGrid[5][6].setText("1");
-        fieldGrid[5][8].setText("3");
-        fieldGrid[6][1].setText("5");
-        fieldGrid[6][2].setText("2");
-        fieldGrid[6][7].setText("9");
-        fieldGrid[7][2].setText("1");
-        fieldGrid[8][0].setText("3");
-        fieldGrid[8][3].setText("9");
-        fieldGrid[8][5].setText("2");
-        fieldGrid[8][8].setText("5");
+        fieldGrid[0][0].entryGuess.setText("8");
+        fieldGrid[0][3].entryGuess.setText("8");
+        fieldGrid[0][5].entryGuess.setText("8");
+        fieldGrid[0][8].entryGuess.setText("8");
+        fieldGrid[1][6].entryGuess.setText("8");
+        fieldGrid[2][1].entryGuess.setText("8");
+        fieldGrid[2][6].entryGuess.setText("8");
+        fieldGrid[2][7].entryGuess.setText("8");
+        fieldGrid[3][0].entryGuess.setText("8");
+        fieldGrid[3][2].entryGuess.setText("9");
+        fieldGrid[3][4].entryGuess.setText("3");
+        fieldGrid[3][6].entryGuess.setText("7");
+        fieldGrid[3][7].entryGuess.setText("8");
+        fieldGrid[4][4].entryGuess.setText("7");
+        fieldGrid[5][1].entryGuess.setText("4");
+        fieldGrid[5][2].entryGuess.setText("8");
+        fieldGrid[5][4].entryGuess.setText("2");
+        fieldGrid[5][6].entryGuess.setText("1");
+        fieldGrid[5][8].entryGuess.setText("3");
+        fieldGrid[6][1].entryGuess.setText("5");
+        fieldGrid[6][2].entryGuess.setText("2");
+        fieldGrid[6][7].entryGuess.setText("9");
+        fieldGrid[7][2].entryGuess.setText("1");
+        fieldGrid[8][0].entryGuess.setText("3");
+        fieldGrid[8][3].entryGuess.setText("9");
+        fieldGrid[8][5].entryGuess.setText("2");
+        fieldGrid[8][8].entryGuess.setText("5");
 
-        fieldGrid[0][0].setEditable(false);
-        fieldGrid[0][3].setEditable(false);
-        fieldGrid[0][5].setEditable(false);
-        fieldGrid[0][8].setEditable(false);
-        fieldGrid[1][7].setEditable(false);
-        fieldGrid[2][1].setEditable(false);
-        fieldGrid[2][6].setEditable(false);
-        fieldGrid[2][7].setEditable(false);
-        fieldGrid[3][0].setEditable(false);
-        fieldGrid[3][2].setEditable(false);
-        fieldGrid[3][4].setEditable(false);
-        fieldGrid[3][6].setEditable(false);
-        fieldGrid[3][7].setEditable(false);
-        fieldGrid[4][4].setEditable(false);
-        fieldGrid[5][1].setEditable(false);
-        fieldGrid[5][2].setEditable(false);
-        fieldGrid[5][4].setEditable(false);
-        fieldGrid[5][6].setEditable(false);
-        fieldGrid[5][8].setEditable(false);
-        fieldGrid[6][1].setEditable(false);
-        fieldGrid[6][2].setEditable(false);
-        fieldGrid[6][7].setEditable(false);
-        fieldGrid[7][2].setEditable(false);
-        fieldGrid[8][0].setEditable(false);
-        fieldGrid[8][3].setEditable(false);
-        fieldGrid[8][5].setEditable(false);
-        fieldGrid[8][8].setEditable(false);
+        fieldGrid[0][0].entryGuess.setEditable(false);
+        fieldGrid[0][3].entryGuess.setEditable(false);
+        fieldGrid[0][5].entryGuess.setEditable(false);
+        fieldGrid[0][8].entryGuess.setEditable(false);
+        fieldGrid[1][7].entryGuess.setEditable(false);
+        fieldGrid[2][1].entryGuess.setEditable(false);
+        fieldGrid[2][6].entryGuess.setEditable(false);
+        fieldGrid[2][7].entryGuess.setEditable(false);
+        fieldGrid[3][0].entryGuess.setEditable(false);
+        fieldGrid[3][2].entryGuess.setEditable(false);
+        fieldGrid[3][4].entryGuess.setEditable(false);
+        fieldGrid[3][6].entryGuess.setEditable(false);
+        fieldGrid[3][7].entryGuess.setEditable(false);
+        fieldGrid[4][4].entryGuess.setEditable(false);
+        fieldGrid[5][1].entryGuess.setEditable(false);
+        fieldGrid[5][2].entryGuess.setEditable(false);
+        fieldGrid[5][4].entryGuess.setEditable(false);
+        fieldGrid[5][6].entryGuess.setEditable(false);
+        fieldGrid[5][8].entryGuess.setEditable(false);
+        fieldGrid[6][1].entryGuess.setEditable(false);
+        fieldGrid[6][2].entryGuess.setEditable(false);
+        fieldGrid[6][7].entryGuess.setEditable(false);
+        fieldGrid[7][2].entryGuess.setEditable(false);
+        fieldGrid[8][0].entryGuess.setEditable(false);
+        fieldGrid[8][3].entryGuess.setEditable(false);
+        fieldGrid[8][5].entryGuess.setEditable(false);
+        fieldGrid[8][8].entryGuess.setEditable(false);
 
 
-        JButton button = new JButton(new SolveAction("Submit"));
+        JButton button = new JButton("Submit");
         setLayout(null);
         mainPanel.setBounds(125, 20, 340, 340);
         button.setBounds(15, 300, 75, 30);
@@ -132,30 +135,6 @@ public class Sudoku extends JPanel implements ActionListener
         add(mainPanel);
         add(button);
 
-    }
-
-    private JTextField createField(int row, int col)
-    {
-        JTextField field = new JTextField(2);
-        field.setTransferHandler(null);
-        field.addKeyListener(new KeyAdapter()
-        {
-            public void keyTyped(KeyEvent e)
-            {
-                if (field.getText().length() >= 1) // limit textfield to 3 characters
-                {
-                    e.consume();
-                }
-                else if (e.getKeyChar() > 57 || e.getKeyChar() < 49)
-                {
-                    e.consume();
-                }
-            }
-        });
-        field.setHorizontalAlignment(JTextField.CENTER);
-        field.setFont(field.getFont().deriveFont(Font.BOLD, FIELD_PTS));
-
-        return field;
     }
 
     @Override
@@ -177,6 +156,7 @@ public class Sudoku extends JPanel implements ActionListener
             {
                 try
                 {
+                    score -= 540;
                     game.frame.getContentPane().setVisible(false);
                     game.frame.getContentPane().remove(this);
                     game.frame.add(new ScoreScreen(this.game, score));
@@ -187,21 +167,54 @@ public class Sudoku extends JPanel implements ActionListener
                     e2.getMessage();
                 }
             }
-        }
-    }
 
-    private class SolveAction extends AbstractAction
-    {
+            if (b.getText().equalsIgnoreCase("submit"))
+            {
+                boolean isWrong = false;
+                for (int row = 0; row < fieldGrid.length; row++)
+                {
+                    for (int col = 0; col < fieldGrid[row].length; col++)
+                    {
+                        entries[row][col] = fieldGrid[row][col].entryGuess.getText();
+                    }
+                }
 
-        public SolveAction(String name)
-        {
+                for (int i = 0; i < fieldGrid.length; i++)
+                {
+                    for (int j = 0; j < fieldGrid[i].length; j++)
+                    {
+                        if (!fieldGrid[i][j].entryGuess.getText().equals(entries[i][j]))
+                        {
+                            if (!fieldGrid[i][j].hasBeenGuessed)
+                            {
+                                isWrong = true;
+                                score -= 10;
+                                fieldGrid[i][j].hasBeenGuessed = true;
+                            }
+                        }
+                    }
+                }
 
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e)
-        {
-
+                if (isWrong)
+                {
+                    JOptionPane.showMessageDialog(game.frame,
+                            "Incorrect. Please try again.");
+                }
+                else
+                {
+                    try
+                    {
+                        game.frame.getContentPane().setVisible(false);
+                        game.frame.getContentPane().remove(this);
+                        game.frame.add(new ScoreScreen(this.game, score));
+                        game.frame.getContentPane().setVisible(true);
+                    }
+                    catch (IOException e2)
+                    {
+                        e2.getMessage();
+                    }
+                }
+            }
         }
     }
 
@@ -235,5 +248,51 @@ public class Sudoku extends JPanel implements ActionListener
             }
         };
         clock.start();
+    }
+
+    private class entry
+    {
+        private JTextField entryGuess;
+        private boolean hasBeenGuessed;
+
+        entry()
+        {
+            hasBeenGuessed = false;
+            entryGuess = createField();
+            entryGuess.setToolTipText("Please type in a number");
+            for (int row = 0; row < fieldGrid.length; row++)
+            {
+                for (int col = 0; col < fieldGrid[row].length; col++)
+                {
+                    int i = row / 3;
+                    int j = col / 3;
+                    panels[i][j].add(fieldGrid[row][col].entryGuess);
+                }
+            }
+        }
+
+        JTextField createField()
+        {
+            JTextField field = new JTextField(2);
+            field.setTransferHandler(null);
+            field.addKeyListener(new KeyAdapter()
+            {
+                public void keyTyped(KeyEvent e)
+                {
+                    if (field.getText().length() >= 1) // limit textfield to 3 characters
+                    {
+                        e.consume();
+                    }
+                    else if (e.getKeyChar() > 57 || e.getKeyChar() < 49)
+                    {
+                        e.consume();
+                    }
+                }
+            });
+            field.setHorizontalAlignment(JTextField.CENTER);
+            field.setFont(field.getFont().deriveFont(Font.BOLD, FIELD_PTS));
+
+            return field;
+        }
     }
 }
