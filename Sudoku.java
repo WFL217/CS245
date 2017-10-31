@@ -1,3 +1,15 @@
+/***************************************************************
+ * file: Sudoku.java
+ * author: Team FTP
+ * class: CS 245
+ *
+ * assignment: Swing Project v1.2
+ * date last modified: 10/30/17
+ *
+ * purpose: Displays a Sudoku board for the user to complete.
+ ****************************************************************/
+package swingv1.pkg2;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,12 +22,15 @@ import javax.swing.*;
 
 public class Sudoku extends JPanel implements ActionListener
 {
+    //Variables to be used
     private Game game;
     private int score;
     private String[][] entries;
     private JLabel clockLabel;
     private JLabel sudokuLabel;
     private JButton quitButton;
+    
+    //Solution for the Sudoku table
     private static final String[][] SOLUTION = {
             {"8", "3", "5", "4", "1", "6", "9", "2", "7"},
             {"2", "9", "6", "8", "5", "7", "4", "3", "1"},
@@ -27,16 +42,23 @@ public class Sudoku extends JPanel implements ActionListener
             {"9", "8", "1", "3", "4", "5", "2", "7", "6"},
             {"3", "7", "4", "9", "6", "2", "8", "1", "5"},
     };
+    //Each cluster is 3x3
     private static final int CLUSTER = 3;
+    //For a 9x9 Sudoku table
     private static final int MAX_ROWS = 9;
+    //Size of the font
     private static final float FIELD_PTS = 32f;
+    //Size of the gap
     private static final int GAP = 2;
     private static final Color BG = Color.LIGHT_GRAY;
+    //Grid for input
     private entry[][] fieldGrid = new entry[MAX_ROWS][MAX_ROWS];
+    //Panels for the grid
     private JPanel[][] panels;
 
     public Sudoku(Game game, int score)
     {
+        //Initializes some of the variables
         this.game = game;
         this.score = score + 540;
         clockLabel = new JLabel("");
@@ -47,10 +69,13 @@ public class Sudoku extends JPanel implements ActionListener
         entries = new String[MAX_ROWS][MAX_ROWS];
         clock();
 
+        //Creates a main panel to store other panels
         JPanel mainPanel = new JPanel(new GridLayout(CLUSTER, CLUSTER));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
         mainPanel.setBackground(BG);
         panels = new JPanel[CLUSTER][CLUSTER];
+        
+        //Initialize panels and create gaps
         for (int i = 0; i < panels.length; i++)
         {
             for (int j = 0; j < panels[i].length; j++)
@@ -62,6 +87,7 @@ public class Sudoku extends JPanel implements ActionListener
             }
         }
 
+        //Adds text boxes to the main panel
         for (int row = 0; row < fieldGrid.length; row++)
         {
             for (int col = 0; col < fieldGrid[row].length; col++)
@@ -73,7 +99,7 @@ public class Sudoku extends JPanel implements ActionListener
             }
         }
 
-
+        //Provide the first visible numbers for the Sudoku board
         fieldGrid[0][0].entryGuess.setText("8");
         fieldGrid[0][3].entryGuess.setText("4");
         fieldGrid[0][5].entryGuess.setText("6");
@@ -102,6 +128,7 @@ public class Sudoku extends JPanel implements ActionListener
         fieldGrid[8][5].entryGuess.setText("2");
         fieldGrid[8][8].entryGuess.setText("5");
 
+        //Makes the fields with the hints uneditable
         fieldGrid[0][0].getEntryGuess().setEditable(false);
         fieldGrid[0][3].getEntryGuess().setEditable(false);
         fieldGrid[0][5].getEntryGuess().setEditable(false);
@@ -130,6 +157,7 @@ public class Sudoku extends JPanel implements ActionListener
         fieldGrid[8][5].getEntryGuess().setEditable(false);
         fieldGrid[8][8].getEntryGuess().setEditable(false);
 
+        //Sets the tool tips for each panel
         for (int row = 0; row < fieldGrid.length; row++)
         {
             for (int col = 0; col < fieldGrid[row].length; col++)
@@ -139,11 +167,12 @@ public class Sudoku extends JPanel implements ActionListener
             }
         }
 
-
+        //Creates the button to submit
         JButton button = new JButton("Submit");
         button.addActionListener(this);
         button.setToolTipText("Check answers");
 
+        //Creates the rest of the buttons
         setLayout(null);
         mainPanel.setBounds(125,20,340,340);
         button.setBounds(15,300,75,30);
@@ -160,6 +189,7 @@ public class Sudoku extends JPanel implements ActionListener
         add(button);
     }
 
+    //Action listener for button presses
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -175,6 +205,7 @@ public class Sudoku extends JPanel implements ActionListener
         if (b != null)
         { //allows access to the button variable and can determine what action to take
 
+            //If quit is pressed, add 0 to the score
             if (b.getText().equalsIgnoreCase("quit"))
             {
                 try
@@ -191,6 +222,7 @@ public class Sudoku extends JPanel implements ActionListener
                 }
             }
 
+            //If submit is pressed, check if Sudoku board is correct
             if (b.getText().equalsIgnoreCase("submit"))
             {
                 boolean isWrong = false;
@@ -273,6 +305,7 @@ public class Sudoku extends JPanel implements ActionListener
         clock.start();
     }
 
+    //Class for each entry the player inputs to each panel
     private class entry
     {
         private Game game;
@@ -287,6 +320,7 @@ public class Sudoku extends JPanel implements ActionListener
             entryGuess.setToolTipText("Please type in a number");
         }
 
+        //Creates the field for each panel for user entry
         JTextField createField() {
             JTextField field = new JTextField(2);
             field.setTransferHandler(null);
@@ -312,6 +346,7 @@ public class Sudoku extends JPanel implements ActionListener
             return field;
         }
 
+        //Checks to see if a panel has gone through submission
         JTextField getEntryGuess()
         {
             return entryGuess;
@@ -319,6 +354,7 @@ public class Sudoku extends JPanel implements ActionListener
 
     }
 
+    //Sets the background picture
     public void paintComponent(Graphics g) {
         ImageIcon dog = new ImageIcon("dog.jpg");
         super.paintComponent(g);
