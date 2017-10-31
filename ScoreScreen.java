@@ -32,6 +32,8 @@ public class ScoreScreen extends JPanel implements ActionListener
     {
         this.game = game;
         this.score = score;
+        if (score < 0)
+            score = 0;
         this.highLabel = new JLabel("New High Score! Please enter your name: ");
         this.gameOverLabel = new JLabel("Game Over");
         this.scoreLabel = new JLabel("Your score is: " +score+".");
