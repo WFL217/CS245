@@ -35,6 +35,7 @@ public class Sudoku extends JPanel implements ActionListener
         sudokuLabel = new JLabel("Sudoku");
         sudokuLabel.setFont(new Font("Arial", Font.BOLD, 20));
         quitButton = new JButton("Quit");
+        JButton button = new JButton("Submit");
         clock();
 
         JPanel mainPanel = new JPanel(new GridLayout(CLUSTER, CLUSTER));
@@ -62,7 +63,8 @@ public class Sudoku extends JPanel implements ActionListener
                 panels[i][j].add(fieldGrid[row][col]);
             }
         }
-        JButton button = new JButton(new SolveAction("Submit"));
+
+
         setLayout(null);
         mainPanel.setBounds(125, 20, 340, 340);
         button.setBounds(15, 300, 75, 30);
@@ -82,6 +84,21 @@ public class Sudoku extends JPanel implements ActionListener
     {
         JTextField field = new JTextField(2);
         field.setTransferHandler(null);
+
+        field.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                if (field.getText().length() >= 1 ) // limit textfield to 1 characters
+                    e.consume();
+                if (e.getKeyChar() >57 || e.getKeyChar() <49){
+                    if(e.getKeyChar() != 8) {
+                        JOptionPane.showMessageDialog(game.frame,
+                                "Please input a valid character");
+                        e.consume();
+                    }
+                }
+                if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+                    field.setText("");
+
         field.addKeyListener(new KeyAdapter()
         {
             public void keyTyped(KeyEvent e)
@@ -93,6 +110,7 @@ public class Sudoku extends JPanel implements ActionListener
                 else if (e.getKeyChar() > 57 || e.getKeyChar() < 49)
                 {
                     e.consume();
+
                 }
             }
         });
@@ -133,6 +151,7 @@ public class Sudoku extends JPanel implements ActionListener
             }
         }
     }
+
 
     private class SolveAction extends AbstractAction
     {
@@ -176,6 +195,7 @@ public class Sudoku extends JPanel implements ActionListener
         }
     }
 
+
     public void clock()
     { //clock that runs throughout program
         Thread clock = new Thread()
@@ -207,4 +227,14 @@ public class Sudoku extends JPanel implements ActionListener
         };
         clock.start();
     }
+
+
+    public void paintComponent(Graphics g) {
+        ImageIcon dog = new ImageIcon("dog.jpg");
+        super.paintComponent(g);
+        dog.paintIcon(this,g,0,0);
+    }
 }
+
+}
+
