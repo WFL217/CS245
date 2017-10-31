@@ -3,7 +3,7 @@
  *  author: Team FTP
  *  class: CS 245 - Programming Graphical User Interfaces
  *
- * assignment: Swing Project v1.2
+ * assignment: Swing Project v1.1
  * date last modified: 10/19/17
  *
  *  purpose: This class displays the score screen after the game of Hangman
@@ -22,30 +22,42 @@ public class ScoreScreen extends JPanel implements ActionListener
     private Game game;
     private JButton backButton;
     private int score;
+    private JLabel gameOverLabel;
+    private JLabel scoreLabel;
+    private JLabel highLabel;
+    private JLabel scoreLabel2;
 
     //Initialize instance variables
     public ScoreScreen(Game game, int score) throws IOException
     {
         this.game = game;
         this.score = score;
+        this.highLabel = new JLabel("New High Score! Please enter your name: ");
+        this.gameOverLabel = new JLabel("Game Over");
+        this.scoreLabel = new JLabel("Your score is: " +score+".");
+        this.scoreLabel2 = new JLabel("Your score is: " +score+".");
+        highLabel.setFont(new Font("Impact", Font.BOLD, 20));
+        gameOverLabel.setFont(new Font("Impact", Font.BOLD, 32));
+        scoreLabel.setFont(new Font("Impact", Font.BOLD, 32));
+        scoreLabel.setFont(new Font("Impact", Font.BOLD, 20));
+
         if (!game.hs.isHighScore(score))
         {
             backButton = new JButton("End");
             backButton.addActionListener(this);
-            backButton.setToolTipText("Main Menu");
             //Create a new container
             Container container = new Container();
 
             container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
             container.add(Box.createRigidArea(new Dimension(0, 50)));
             //Create the title and add it to the box container
-            container.add(new JLabel("Game Over"));
+            container.add(gameOverLabel);
 
             //Moves the next label a little bit down below the "Credits" label
             container.add(Box.createRigidArea(new Dimension(0, 40)));
 
             //List of programmers responsible for this application
-            container.add(new JLabel("Your score is "+score+"."));
+            container.add(scoreLabel);
             container.add(Box.createRigidArea(new Dimension(0, 40)));
             container.add(backButton);
 
@@ -55,12 +67,12 @@ public class ScoreScreen extends JPanel implements ActionListener
         else {
             JTextField newName = new JTextField(10);
             newName.addActionListener(this);
-            newName.setToolTipText("Press Enter to submit new score");
             Container container = new Container();
             container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
             container.add(Box.createRigidArea(new Dimension(0, 50)));
-            container.add(new JLabel("New high score!!! What is your name? "));
+            container.add(highLabel);
             container.add(newName);
+            container.add(scoreLabel2);
             this.add(container);
         }
     }
