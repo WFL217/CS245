@@ -3,7 +3,7 @@
  * author: Team FTP
  * class: CS 245
  *
- * assignment: Swing Project v1.1
+ * assignment: Swing Project v1.2
  * date last modified: 10/19/17
  *
  * purpose: This is the main method which ties all other panels into
@@ -60,6 +60,7 @@ public class Game{
         frame.add(intro);
         frame.setVisible(true);
 
+        //Universal KeyEvent detector, used for ESC and F1 Keys
         KeyboardFocusManager.getCurrentKeyboardFocusManager()
                 .addKeyEventDispatcher(new KeyEventDispatcher() {
                     @Override
