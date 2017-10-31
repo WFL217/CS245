@@ -23,7 +23,7 @@ public class Sudoku extends JPanel implements ActionListener
             {"5", "6", "9", "1", "3", "4", "7", "8", "2"},
             {"1", "2", "3", "6", "7", "8", "5", "4", "9"},
             {"7", "4", "8", "5", "2", "9", "1", "6", "3"},
-            {"6", "5", "2", "7", "8", "2", "3", "9", "4"},
+            {"6", "5", "2", "7", "8", "1", "3", "9", "4"},
             {"9", "8", "1", "3", "4", "5", "2", "7", "6"},
             {"3", "7", "4", "9", "6", "2", "8", "1", "5"},
     };
@@ -43,6 +43,7 @@ public class Sudoku extends JPanel implements ActionListener
         sudokuLabel = new JLabel("Sudoku");
         sudokuLabel.setFont(new Font("Arial", Font.BOLD, 20));
         quitButton = new JButton("Quit");
+        quitButton.setToolTipText("Exit to main menu.");
         entries = new String[MAX_ROWS][MAX_ROWS];
         clock();
 
@@ -129,9 +130,19 @@ public class Sudoku extends JPanel implements ActionListener
         fieldGrid[8][5].getEntryGuess().setEditable(false);
         fieldGrid[8][8].getEntryGuess().setEditable(false);
 
+        for (int row = 0; row < fieldGrid.length; row++)
+        {
+            for (int col = 0; col < fieldGrid[row].length; col++)
+            {
+                if (!fieldGrid[row][col].entryGuess.isEditable())
+                    fieldGrid[row][col].entryGuess.setToolTipText("This is here to help you!");
+            }
+        }
+
 
         JButton button = new JButton("Submit");
         button.addActionListener(this);
+        button.setToolTipText("Check answers");
 
         setLayout(null);
         mainPanel.setBounds(125,20,340,340);

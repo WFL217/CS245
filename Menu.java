@@ -108,4 +108,10 @@ public class Menu extends JPanel implements ActionListener{
             }
         }
     }
+
+    public void paintComponent(Graphics g) {
+        ImageIcon dog = new ImageIcon("dog.jpg");
+        super.paintComponent(g);
+        dog.paintIcon(this,g,0,0);
+    }
 }
