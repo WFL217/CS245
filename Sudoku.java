@@ -1,5 +1,3 @@
-package swingv1.pkg0;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -62,6 +60,64 @@ public class Sudoku extends JPanel implements ActionListener
                 panels[i][j].add(fieldGrid[row][col]);
             }
         }
+
+        fieldGrid[0][0].setText("8");
+        fieldGrid[0][3].setText("4");
+        fieldGrid[0][5].setText("6");
+        fieldGrid[0][8].setText("7");
+        fieldGrid[1][6].setText("4");
+        fieldGrid[2][1].setText("1");
+        fieldGrid[2][6].setText("6");
+        fieldGrid[2][7].setText("5");
+        fieldGrid[3][0].setText("5");
+        fieldGrid[3][2].setText("9");
+        fieldGrid[3][4].setText("3");
+        fieldGrid[3][6].setText("7");
+        fieldGrid[3][7].setText("8");
+        fieldGrid[4][4].setText("7");
+        fieldGrid[5][1].setText("4");
+        fieldGrid[5][2].setText("8");
+        fieldGrid[5][4].setText("2");
+        fieldGrid[5][6].setText("1");
+        fieldGrid[5][8].setText("3");
+        fieldGrid[6][1].setText("5");
+        fieldGrid[6][2].setText("2");
+        fieldGrid[6][7].setText("9");
+        fieldGrid[7][2].setText("1");
+        fieldGrid[8][0].setText("3");
+        fieldGrid[8][3].setText("9");
+        fieldGrid[8][5].setText("2");
+        fieldGrid[8][8].setText("5");
+
+        fieldGrid[0][0].setEditable(false);
+        fieldGrid[0][3].setEditable(false);
+        fieldGrid[0][5].setEditable(false);
+        fieldGrid[0][8].setEditable(false);
+        fieldGrid[1][7].setEditable(false);
+        fieldGrid[2][1].setEditable(false);
+        fieldGrid[2][6].setEditable(false);
+        fieldGrid[2][7].setEditable(false);
+        fieldGrid[3][0].setEditable(false);
+        fieldGrid[3][2].setEditable(false);
+        fieldGrid[3][4].setEditable(false);
+        fieldGrid[3][6].setEditable(false);
+        fieldGrid[3][7].setEditable(false);
+        fieldGrid[4][4].setEditable(false);
+        fieldGrid[5][1].setEditable(false);
+        fieldGrid[5][2].setEditable(false);
+        fieldGrid[5][4].setEditable(false);
+        fieldGrid[5][6].setEditable(false);
+        fieldGrid[5][8].setEditable(false);
+        fieldGrid[6][1].setEditable(false);
+        fieldGrid[6][2].setEditable(false);
+        fieldGrid[6][7].setEditable(false);
+        fieldGrid[7][2].setEditable(false);
+        fieldGrid[8][0].setEditable(false);
+        fieldGrid[8][3].setEditable(false);
+        fieldGrid[8][5].setEditable(false);
+        fieldGrid[8][8].setEditable(false);
+
+
         JButton button = new JButton(new SolveAction("Submit"));
         setLayout(null);
         mainPanel.setBounds(125, 20, 340, 340);
@@ -139,40 +195,13 @@ public class Sudoku extends JPanel implements ActionListener
 
         public SolveAction(String name)
         {
-            super(name);
-            int mnemonic = (int) name.charAt(0);
-            putValue(MNEMONIC_KEY, mnemonic);
+
         }
 
         @Override
         public void actionPerformed(ActionEvent e)
         {
 
-            new Timer(TIMER_DELAY, new ActionListener()
-            {
-                private int i = 0;
-                private int j = 0;
-
-                @Override
-                public void actionPerformed(ActionEvent e)
-                {
-                    // MAX_ROWS is 9
-                    if (i == MAX_ROWS)
-                    {
-                        ((Timer) e.getSource()).stop();
-                    }
-                    if (j == MAX_ROWS)
-                    {
-                        i++;
-                        j = 0;
-                    }
-                    int number = (int) (MAX_ROWS * Math.random()) + 1;
-                    fieldGrid[i][j].setBackground(SOLVED_BG);
-                    fieldGrid[i][j].setText(String.valueOf(number));
-
-                    j++;
-                }
-            }).start();
         }
     }
 
