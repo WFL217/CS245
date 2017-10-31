@@ -3,7 +3,7 @@
  * author: Team FTP
  * class: CS 245
  *
- * assignment: Swing Project v1.2
+ * assignment: Swing Project v1.1
  * date last modified: 10/19/17
  *
  * purpose: This is the main method which ties all other panels into
@@ -13,10 +13,13 @@
 
 import javax.swing.*;
 import java.awt.*;
+
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-public class Game {
+
+public class Game{
 
     final int FINAL_WIDTH = 600; //frame dimensions
     final int FINAL_HEIGHT = 400;
@@ -29,6 +32,7 @@ public class Game {
     ScoreScreen ss;
     Hangman hg;
     ButtonGame bg;
+
 
     public enum STATE{ //allows access to each panel
         Intro,
@@ -46,6 +50,8 @@ public class Game {
         menu = new Menu(this);
         credits = new Credits(this);
 
+
+
         frame.setPreferredSize(new Dimension(FINAL_WIDTH, FINAL_HEIGHT));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
@@ -53,6 +59,30 @@ public class Game {
         frame.pack();
         frame.add(intro);
         frame.setVisible(true);
+
+        KeyboardFocusManager.getCurrentKeyboardFocusManager()
+                .addKeyEventDispatcher(new KeyEventDispatcher() {
+                    @Override
+                    public boolean dispatchKeyEvent(KeyEvent e) {
+                        if(KeyEvent.KEY_PRESSED == e.getID()){
+                            if(e.getKeyCode()==KeyEvent.VK_F1)
+                            JOptionPane.showMessageDialog(frame,
+                                    "                 " +
+                                            "Created By:" + "\n" +
+                                            "Amir Sotoodeh(012165218)" + "\n" +
+                                            "Jason Kaufman(012134941)" + "\n" +
+                                            "Jacob Young(010224552)" + "\n" +
+                                            "    CS245 Quarter Project" + "\n" +
+                                            "               Fall 2017");
+
+                        }
+                        if(KeyEvent.KEY_PRESSED == e.getID()){
+                            if(e.getKeyCode()==KeyEvent.VK_ESCAPE)
+                                System.exit(0);
+                        }
+                        return false;
+                    }
+                });
 
         if(gameState == STATE.Intro) { //create game state with intro screen
 
