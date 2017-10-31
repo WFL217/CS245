@@ -42,6 +42,10 @@ public class ScoreScreen extends JPanel implements ActionListener
         gameOverLabel.setFont(new Font("Impact", Font.BOLD, 32));
         scoreLabel.setFont(new Font("Impact", Font.BOLD, 32));
         scoreLabel.setFont(new Font("Impact", Font.BOLD, 20));
+        highLabel.setForeground(Color.BLUE);
+        scoreLabel.setForeground(Color.BLUE);
+        scoreLabel2.setForeground(Color.BLUE);
+        gameOverLabel.setForeground(Color.BLUE);
 
         if (!game.hs.isHighScore(score))
         {
@@ -112,5 +116,9 @@ public class ScoreScreen extends JPanel implements ActionListener
             }
         }
     }
-
+    public void paintComponent(Graphics g) {
+        ImageIcon dog = new ImageIcon("dog.jpg");
+        super.paintComponent(g);
+        dog.paintIcon(this,g,0,0);
+    }
 }
